@@ -115,7 +115,7 @@ if __name__ == '__main__':
         components = args.components
 
     # now fitting real ppca
-    ppca = PPCA(n_dimension=args.components)
+    ppca = PPCA(n_dimension=components)
     ppca.fit(spectrogram_space_scaled, method='eig')
     small_dataset = ppca.transform(spectrogram_space_scaled, probabilistic=True)
     back_from_transformed = ppca.inverse_transform(small_dataset, probabilistic=True)
