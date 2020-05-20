@@ -89,7 +89,7 @@ if __name__ == '__main__':
     spectrogram_space = torchaudio.transforms.Spectrogram()(train_set)
 
     if args.debug:
-        np.save("spectrogram_space", spectrogram_space)
+        np.save("{}/spectrogram_space".format(args.output_folder), spectrogram_space)
 
     original_dimenstion = spectrogram_space.size()[1:]
     spectrogram_space = spectrogram_space.view(spectrogram_space.size()[0], -1).numpy()
@@ -122,13 +122,13 @@ if __name__ == '__main__':
     back_from_transformed = np.exp(back_from_transformed)
     back_from_transformed = back_from_transformed - np.finfo(float).eps
 
-    np.save("reconstructed_spectrogram", back_from_transformed)
+    np.save("{}/reconstructed_spectrogram".format(args.output_folder), back_from_transformed)
 
     converted_data = torch.from_numpy(back_from_transformed).view(back_from_transformed.shape[0],
                                                                   original_dimenstion[0],
                                                                   original_dimenstion[1])
     reconstructed_raw = GriffinLim()(converted_data.float()).numpy()
-    np.save("reconstructed_raw", reconstructed_raw)
+    np.save("{}/reconstructed_raw".format(args.output_folder), reconstructed_raw)
 
     logger.info("Generating Data ")
     data_generated = ppca.generate(n_sample=args.samples_to_generate)
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     data_generated = data_generated - np.finfo(float).eps
 
     if args.debug:
-        np.save("generated_spectrogram", data_generated)
+        np.save("{}/generated_spectrogram".format(args.output_folder), data_generated)
 
     converted_data = torch.from_numpy(data_generated).view(args.samples_to_generate, original_dimenstion[0],
                                                            original_dimenstion[1])
